@@ -1,16 +1,29 @@
 import {SafeAreaView, StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { JSX } from 'react';
+import { JSX, useState } from 'react';
 
 function Main_Map(): JSX.Element {
   console.log('-- Register()()');
+
+  const [showBtn,setShowBtn] = useState(false)
+  const handleLongPress = async(event:any) => {
+    setShowBtn(true)
+  }
+
+  const handleAddMarker = (title:string) => {
+    setShowBtn(false)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
         {/** 지도자리 원래는 api써야하지만 현잰 그림 */}
         <View style={[styles.container, {transform: [{scaleX:1}, {scaleY:2}]}]}>
-            <Icon name="building" size={300} color={'#34db98'} />
+            <Icon name="building" size={300} color={'#34db98'}
+            onPress={()=>{setShowBtn(false)}}
+            onLongPress={handleLongPress}
+            />
+
         </View>
 
         <View style={{position:'absolute', width:'100%', height:'100%', padding:10}} >
@@ -24,6 +37,24 @@ function Main_Map(): JSX.Element {
                 </TouchableOpacity>
             </View>
         </View>
+{/* 내 위치 */}
+        <TouchableOpacity style={[{position:'absolute', bottom:20, right:20}]}>
+          <Icon name='crosshairs' size={40} color={'#3498db'} />
+        </TouchableOpacity>
+
+        {showBtn && <View style={{position:'absolute', top : hp(50)-45, left: wp(50)-75, height : 90, width:150}}>
+          <TouchableOpacity style={[styles.button, {flex:1, marginVertical:1}]}
+          onPress={() => handleAddMarker('출발지')}
+          >
+            <Text style={styles.buttonText} >출발지로 등록</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, {flex:1}]}
+          onPress={() => handleAddMarker('도착지')}
+          >
+            <Text style={styles.buttonText} >도착지로 등록</Text>
+          </TouchableOpacity>
+        </View>
+        }
 
 
     </SafeAreaView>
@@ -38,14 +69,12 @@ const styles = StyleSheet.create({
       width: '100%',
     },
     button: {
-      width: '70%',
       backgroundColor: '#3498db',
       paddingVertical: 10,
       paddingHorizontal: 20,
       borderRadius: 5,
     },
     buttonDisable: {
-      width: '70%',
       backgroundColor: 'gray',
       paddingVertical: 10,
       paddingHorizontal: 20,
@@ -57,11 +86,10 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     input: {
-      width: '70%',
       height: 40,
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: 'grey',
-      marginVertical: 10,
+      marginVertical: 1,
       padding: 10,
     },
   });
