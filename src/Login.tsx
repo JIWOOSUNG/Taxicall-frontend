@@ -4,12 +4,13 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {TextInput} from 'react-native-gesture-handler';
 import {useState, JSX} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Login(): JSX.Element {
   console.log('-- Login()');
 
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
-  const [userID, setUserId] = useState('');
+  const [userId, setUserId] = useState('');
   const [userPw, setUserPw] = useState('');
   const [disable, setDisable] = useState(true);
 
@@ -28,7 +29,9 @@ function Login(): JSX.Element {
   };
 
   const gotoMain = () => {
-    navigation.push('Main');
+    AsyncStorage.setItem('userId',userId).then( () => {
+      navigation.push('Main');
+    })
   };
 
   return (

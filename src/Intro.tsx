@@ -4,7 +4,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useFocusEffect } from '@react-navigation/native';
 import React, { JSX } from 'react';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Intro(): JSX.Element {
   console.log('-- Intro()');
@@ -12,8 +12,10 @@ function Intro(): JSX.Element {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
   useFocusEffect(React.useCallback(() => {
-    setTimeout( () => {
-        let isAutoLogin = false
+    setTimeout(async() => {
+
+      let userId = await AsyncStorage.getItem('userId')
+        let isAutoLogin = userId ? true: false
 
         if(isAutoLogin) {
             navigation.push("Main")
