@@ -10,6 +10,7 @@ import Intro from './Intro'
 import Main from './Main';
 import Register from './Register';
 import Login from './Login';
+import NickName from './Main_Setting_NickName';
 
 function TaxiApp() : JSX.Element {
     console.log("-- TaxiApp()")
@@ -26,6 +27,8 @@ function TaxiApp() : JSX.Element {
             <Stack.Screen name='Register' component={Register}
             options={{headerShown:true, title:'회원가입'}} />
             <Stack.Screen name='Main' component={Main}
+            options={{headerShown:false}} />
+            <Stack.Screen name='NickName' component={NickName}
             options={{headerShown:false}} />
           </Stack.Navigator>
         </NavigationContainer>

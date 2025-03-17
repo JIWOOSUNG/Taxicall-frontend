@@ -1,6 +1,6 @@
 import {SafeAreaView, StyleSheet, Text, View, FlatList, RefreshControl, Modal} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useState } from 'react';
+import { useState,JSX } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome'
