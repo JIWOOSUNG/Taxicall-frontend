@@ -1,9 +1,11 @@
-import {SafeAreaView, StyleSheet, Text, View, FlatList, RefreshControl, Modal} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View, FlatList, RefreshControl, Modal,Alert} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useState,JSX } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from './API'
 
 function Main_List(): JSX.Element {
   console.log('-- Register()()');
@@ -15,21 +17,31 @@ function Main_List(): JSX.Element {
     requestCallList()
   },[]))
 
-  const requestCallList = () => {
+  const requestCallList = async() => {
     setLoading(true)
-    setTimeout(() => {
+    let userId = await AsyncStorage.getItem('userId') || ""
 
-
-    let tmp : any = []
-
-    for( var i =0; i<10; i++){
-      let row={id:i, start_addr : '출발주소', end_addr : '도착주소', call_state:'REQ'}
-      tmp.push(row)
-    }
-
-    setCallList(tmp)
-    setLoading(false)
-  },200)
+    api.list(userId)
+    .then(response => {
+      let { code, message,data} = response.data[0]
+      if(code == 0) {
+        setCallList(data)
+      }
+      else{
+        Alert.alert("오류", message, [
+          {
+            text : "확인",
+            onPress: () => console.log('cancle pressed'),
+            style: 'cancel'
+          }
+        ])
+      }
+      setLoading(false)
+    })
+    .catch(err => {
+      console.log(JSON.stringify(err))
+      setLoading(false)
+    })
 
   }
 

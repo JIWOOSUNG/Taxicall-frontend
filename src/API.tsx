@@ -17,6 +17,9 @@ export default {
     register(id:string, pw:string) {
         return instance.post('/taxi/register', {userId: id, userPw:pw})
     },
+    list(id:string) {
+        return instance.post('/taxi/list', {userId:id})
+    }
 
 
 }
