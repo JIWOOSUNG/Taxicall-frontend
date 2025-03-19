@@ -1,13 +1,41 @@
-import {SafeAreaView, StyleSheet, Text, TouchableOpacity, TextInput, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, TouchableOpacity, TextInput, View, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useState, JSX } from 'react';
+import { useNavigation, ParamListBase } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import api from './API';
 
 function Register(): JSX.Element {
   console.log('-- Register()()');
 
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>()
+
   const [userId, setUserId] = useState('');
   const [userPw, setUserPw] = useState('');
   const [userPw2, setUserPw2] = useState('');
+
+  const onRegister = () => {
+    api.register(userId, userPw).then(response => {
+      let { code, message} = response.data[0]
+      let title = "알림"
+
+      if( code ==0 ) {
+        navigation.pop()
+      }
+      else {
+        title = "오류"
+      }
+
+      Alert.alert(title, message, [{
+        text:"확인",
+        onPress: () => console.log("cancle pressed"),
+        style:'cancel'
+      }])
+    })
+    .catch( err => {
+      console.log(JSON.stringify(err))
+    })
+  }
 
  const isDisable = () => {
     if(userId && userPw && userPw2 && (userPw==userPw2)) {
@@ -32,7 +60,7 @@ function Register(): JSX.Element {
         </View>
 
         <View style={[styles.container, {justifyContent:'flex-start'}]}>
-            <TouchableOpacity disabled={isDisable()} style={isDisable() ? styles.buttonDisable : styles.button} >
+            <TouchableOpacity disabled={isDisable()} onPress={onRegister} style={isDisable() ? styles.buttonDisable : styles.button} >
                 <Text style={styles.buttonText}>회원가입</Text>
             </TouchableOpacity>
         </View>

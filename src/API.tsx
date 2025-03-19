@@ -12,7 +12,11 @@ export default {
 
     login(id:string, pw:string) {
         return instance.post('/taxi/login', {userId: id, userPw: pw})
-    }
+    },
+
+    register(id:string, pw:string) {
+        return instance.post('/taxi/register', {userId: id, userPw:pw})
+    },
 
 
 }
