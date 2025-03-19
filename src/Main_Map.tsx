@@ -1,10 +1,18 @@
 import {SafeAreaView, StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { JSX, useState } from 'react';
+import React, { useState } from 'react';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
 function Main_Map(): JSX.Element {
   console.log('-- Register()()');
+
+  const [initialRegion, setInitialRegion] = useState({
+    latitude : 37.5666612,
+    longitude : 126.9783785,
+    latitudeDelta : 0.0922,
+    longitudeDelta : 0.0421
+  })
 
   const [showBtn,setShowBtn] = useState(false)
   const handleLongPress = async(event:any) => {
@@ -18,13 +26,10 @@ function Main_Map(): JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
         {/** 지도자리 원래는 api써야하지만 현잰 그림 */}
-        <View style={[styles.container, {transform: [{scaleX:1}, {scaleY:2}]}]}>
-            <Icon name="building" size={300} color={'#34db98'}
-            onPress={()=>{setShowBtn(false)}}
-            onLongPress={handleLongPress}
-            />
+        <MapView style={styles.container} provider={PROVIDER_GOOGLE}
+          region={initialRegion}>
+        </MapView>
 
-        </View>
 
         <View style={{position:'absolute', width:'100%', height:'100%', padding:10}} >
             <View style={{flexDirection:'row'}}>
